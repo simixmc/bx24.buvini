@@ -21,25 +21,25 @@
     }
 
     function getEgr (unp) {
-        $.ajax({
-            url: BASE_URL + 'egr/' + unp + '?access-token=' + TOKEN,
-            method: "GET",
-            crossDomain: true,
-            async:true,
-            headers: {
-                'Access-Control-Allow-Credentials' : true,
-                'Access-Control-Allow-Origin':'*',
-                // 'Access-Control-Allow-Methods':'GET',
-                // 'Access-Control-Allow-Headers':'application/json',
-            },
-            contentType: "application/json",
-            dataType: "jsonp",
-            xhrFields: {
-                withCredentials: true
-            }
-        }).done(function (data) {
-            console.log(data)
-        });
+        // $.ajax({
+        //     url: BASE_URL + 'egr/' + unp + '?access-token=' + TOKEN,
+        //     method: "GET",
+        //     crossDomain: true,
+        //     async:true,
+        //     headers: {
+        //         'Access-Control-Allow-Credentials' : true,
+        //         'Access-Control-Allow-Origin':'*',
+        //         // 'Access-Control-Allow-Methods':'GET',
+        //         // 'Access-Control-Allow-Headers':'application/json',
+        //     },
+        //     contentType: "application/json",
+        //     dataType: "jsonp",
+        //     xhrFields: {
+        //         withCredentials: true
+        //     }
+        // }).done(function (data) {
+        //     console.log(data)
+        // });
     }
 </script>
 </body>
