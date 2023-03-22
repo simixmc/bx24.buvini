@@ -11,15 +11,35 @@
 </head>
 <body>
 <script>
-    /**
-     * передаем методу  `init` в качестве параметра callback-функцию
-     * - наше приложение
-     */
+    let TOKEN = '96fc37b575422a61918c9a482bd631f0';
+    let BASE_URL = 'https://api.kartoteka.by/'
+
     BX24.init(app);
 
     function app() {
-        const initDate = BX24.getAuth();
-        console.log("ititDate: ", initDate);
+        getEgr('391771865')
+    }
+
+    function getEgr (unp) {
+        $.ajax({
+            url: BASE_URL + 'egr/' + unp + '?access-token=' + TOKEN,
+            method: "GET",
+            crossDomain: true,
+            async:true,
+            headers: {
+                'Access-Control-Allow-Credentials' : true,
+                'Access-Control-Allow-Origin':'*',
+                // 'Access-Control-Allow-Methods':'GET',
+                // 'Access-Control-Allow-Headers':'application/json',
+            },
+            contentType: "application/json",
+            dataType: "jsonp",
+            xhrFields: {
+                withCredentials: true
+            }
+        }).done(function (data) {
+            console.log(data)
+        });
     }
 </script>
 </body>
