@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>BuviniApp</title>
-    <!-- подключаем библиотеку BX24 -->
-    <script src="https://api.bitrix24.com/api/v1/"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
@@ -19,7 +17,6 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-auto">
-                            <label for="unp_in" class="form-label">УНП (391771865)</label>
                             <input type="text" class="form-control" id="unp_in" name="unp" placeholder="УНП">
                         </div>
                         <div class="align-items-end col-auto d-flex">
@@ -29,7 +26,19 @@
                 </div>
             </div>
         </div>
+        <div class="col-6 d-none" id="loader">
+            <div class="card">
+                <div class="card-body m-auto">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-6" id="info">
+            <div class="alert alert-danger d-none" role="alert" id="alert-danger">
+                По данному запросу ничего не найдено
+            </div>
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3 row">
@@ -110,18 +119,21 @@
                             <input id="egr_short_name" class="form-control" type="text" placeholder="Краткое наименование по ЕГР" aria-label="Disabled input example" disabled>
                         </div>
                     </div>
+                    <div class="d-grid gap-2 d-none" id="btnAddCompany">
+                        <button type="button" class="btn btn-outline-success" id="addCompany">Добавить компанию</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<script src="https://api.bitrix24.com/api/v1/"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
 <script>
     let BASE_URL = 'https://api.buvini.by/'
-    let DATA_API
 
     BX24.init(app);
 
@@ -129,7 +141,13 @@
         $( document ).ready(function () {
             $('#search').click(function () {
                 $(this).addClass('disabled')
+                $('#loader').removeClass('d-none')
+                $('#info').addClass('d-none')
                 getEgr($('input[name="unp"]').val())
+            })
+
+            $('#addCompany').click(function () {
+                alert('Пока не работает')
             })
         })
     }
@@ -138,20 +156,32 @@
         (async function() {
             result = await (await fetch(BASE_URL + '?unp=' + unp)).json();
             checkInfo(result)
-            $('#search').removeClass('disabled')
         })();
     }
 
     function checkInfo (data) {
+        $('#search').removeClass('disabled')
+        $('#btnAddCompany').removeClass('d-none')
+        clearInfo()
         if (data.error) {
-
+            $('#alert-danger').removeClass('d-none')
+            $('#btnAddCompany').addClass('d-none')
         } else {
             let d = data.data.Summary;
+
+            $('#alert-danger').addClass('d-none')
 
             for (const [key, value] of Object.entries(d)) {
                 $('#' + key).val(value)
             }
         }
+
+        $('#info').removeClass('d-none')
+        $('#loader').addClass('d-none')
+    }
+
+    function clearInfo () {
+        $('#info .form-control').val('')
     }
 </script>
 </body>
