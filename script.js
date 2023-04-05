@@ -18,6 +18,14 @@ function app() {
             $('#unp_add').val($('#unp').val())
             $('#name_add').val($('#name').val())
             $('#short_name_add').val($('#short_name').val())
+
+            $('#address_add').val($('#address').val())
+            $('#status_mns_add').val($('#status_mns').val())
+            $('#egr_status_name_add').val($('#egr_status_name').val())
+            $('#bankruptcy_add').val($('#bankruptcy').val())
+            $('#liquidation_add').val($('#liquidation').val())
+            $('#egr_brand_name_add').val($('#egr_brand_name').val())
+
             $('#addInfoPanel').removeClass('d-none')
         })
 
@@ -66,8 +74,14 @@ function addCompany () {
     let fields = {
         "TITLE" : $('#name_add').val(),
         "OPENED": "Y",
+        "REG_ADDRESS": $('#address_add').val(),
         "UF_CRM_1664531575783" : $('#unp_add').val(),
         "UF_CRM_1667657141784" : $('#short_name_add').val(),
+        "UF_CRM_1680688558690" : $('#status_mns_add').val(),
+        "UF_CRM_1680688581714" : $('#egr_status_name_add').val(),
+        "UF_CRM_1680688596706" : $('#bankruptcy_add').val(),
+        "UF_CRM_1680688618483" : $('#liquidation_add').val(),
+        "UF_CRM_1680693572006" : $('#egr_brand_name_add').val(),
         "ASSIGNED_BY_ID": 1,
     }
 
@@ -108,8 +122,14 @@ function updateCompany () {
     let fields = {
         "TITLE" : $('#name_add').val(),
         "OPENED": "Y",
+        "REG_ADDRESS": $('#address_add').val(),
         "UF_CRM_1664531575783" : $('#unp_add').val(),
         "UF_CRM_1667657141784" : $('#short_name_add').val(),
+        "UF_CRM_1680688558690" : $('#status_mns_add').val(),
+        "UF_CRM_1680688581714" : $('#egr_status_name_add').val(),
+        "UF_CRM_1680688596706" : $('#bankruptcy_add').val(),
+        "UF_CRM_1680688618483" : $('#liquidation_add').val(),
+        "UF_CRM_1680693572006" : $('#egr_brand_name_add').val()
     }
 
     if ($('#phone_add').val() !== "") {
@@ -158,6 +178,7 @@ function getEgr (unp) {
 }
 
 function checkInfo (data) {
+    console.log(data)
     $('#search').removeClass('disabled')
     $('#btnAddCompany').removeClass('d-none')
     clearInfo()
@@ -170,7 +191,18 @@ function checkInfo (data) {
         $('#alert-danger').addClass('d-none')
 
         for (const [key, value] of Object.entries(d)) {
-            $('#' + key).val(value)
+            console.log(value)
+            switch (key) {
+                case 'bankruptcy':
+                    $('#' + key).val(value['status'] || 'Контрагент не находится в процессе банкротства')
+                    break
+                case 'liquidation':
+                    $('#' + key).val(value['current_status'] || 'Объявления не публиковались')
+                    break
+                default:
+                    $('#' + key).val(value)
+            }
+
         }
     }
 
