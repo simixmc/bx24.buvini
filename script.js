@@ -183,8 +183,13 @@ function checkInfo (data) {
     $('#btnAddCompany').removeClass('d-none')
     clearInfo()
     if (data.error) {
-        $('#alert-danger').removeClass('d-none')
-        $('#btnAddCompany').addClass('d-none')
+        if (parseInt(data['mess']['limit']['day_limit']) !== 0) {
+            $('#alert-danger').removeClass('d-none')
+            $('#btnAddCompany').addClass('d-none')
+        } else {
+            $('#alert-limit').removeClass('d-none')
+            $('#btnAddCompany').addClass('d-none')
+        }
     } else {
         let d = data.data.Summary;
 
